@@ -6,6 +6,8 @@ namespace App\Application\Actions\Api;
 
 use App\Application\Actions\JsonResponse;
 use App\Application\Exceptions\ValidationException;
+use App\Domain\Booking\Trip;
+use App\Domain\Booking\TripId;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Rakit\Validation\Validator;
@@ -18,9 +20,19 @@ class CreateTrip
     ): ResponseInterface {
         $data = $this->validated($request->getParsedBody());
 
+        $trip = Trip::new(TripId::generate())
+            ->initialize(
+                $data['slots'],
+                $data['origin'] ?? null,
+                $data['destination'] ?? null
+            );
 
-
-        return (new JsonResponse($response))->send($data);
+        return (new JsonResponse($response))->send([
+            'trip_id' => $trip->aggregateRootId()->toString(),
+            'slots' => $trip->getSlots(),
+            'origin' => $trip->getOrigin(),
+            'destination' => $trip->getDestination(),
+        ]);
     }
 
     private function validated(array $parameters): array
@@ -30,7 +42,7 @@ class CreateTrip
                 $parameters,
                 [
                     'origin' => 'nullable|alpha_spaces',
-                    'destiny' => 'nullable|alpha_spaces',
+                    'destination' => 'nullable|alpha_spaces',
                     'slots' => 'required|integer',
                 ]
             );

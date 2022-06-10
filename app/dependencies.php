@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
 use DI\ContainerBuilder;
+use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\ORM\EntityManager;
 use EventSauce\EventSourcing\AggregateRootRepository;
 use EventSauce\EventSourcing\MessageDispatcher;
@@ -14,6 +15,7 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Cache\Adapter as CacheAdapter;
 
 return function (ContainerBuilder $containerBuilder) {
     $containerBuilder->addDefinitions([
@@ -35,15 +37,20 @@ return function (ContainerBuilder $containerBuilder) {
             /** @var array $doctrine */
             $doctrine = $c->get(SettingsInterface::class)->get('doctrine');
 
+            $cache = $doctrine['dev_mode'] ?
+                DoctrineProvider::wrap(new CacheAdapter\ArrayAdapter()) :
+                DoctrineProvider::wrap(new CacheAdapter\FilesystemAdapter(directory: $doctrine['cache_dir']));
+
             $config = \Doctrine\ORM\Tools\Setup::createAttributeMetadataConfiguration(
                 $doctrine['metadata_dirs'],
                 $doctrine['dev_mode'],
+                cache: $cache
             );
 
             return EntityManager::create($doctrine['connection'], $config);
         },
         MessageDispatcher::class => function (ContainerInterface $c): MessageDispatcher {
-            /** @var array $eventsauce */
+            /** @var array $eventSauce */
             $eventSauce = $c->get(SettingsInterface::class)->get('eventsauce');
 
             $consumers = [];

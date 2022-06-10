@@ -16,6 +16,7 @@ return function (App $app) {
 
     $app->group('/api/v1', function (Group $group) {
         $group->post('/trips', v1\CreateTrip::class);
+        $group->post('/trips/{tripId}/reservations', v1\PlaceReservation::class);
     });
 
     $app->get('/', function (Request $request, Response $response) {

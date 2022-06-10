@@ -36,6 +36,7 @@ return function (ContainerBuilder $containerBuilder) {
                 ],
                 'eventsauce' => [
                     'consumers' => [
+                        \App\Infrastructure\EventSourcing\Consumers\TripProjection::class,
                     ],
                 ],
             ]);
