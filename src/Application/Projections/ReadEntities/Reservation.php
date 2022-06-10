@@ -9,12 +9,6 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity, ORM\Table(name: 'reservations')]
 class Reservation
 {
-    #[
-        ORM\ManyToOne(targetEntity: Trip::class, inversedBy: 'reservations'),
-        ORM\JoinColumn(name: 'trip_id', referencedColumnName: 'id')
-    ]
-    private Trip $trip;
-
     public function __construct(
         #[
             ORM\Id,
@@ -24,7 +18,12 @@ class Reservation
         #[ORM\Column(type: 'string')]
         private string $customer,
         #[ORM\Column(type: 'integer', nullable: true)]
-        private int $slots
+        private int $slots,
+        #[
+            ORM\ManyToOne(targetEntity: Trip::class, inversedBy: 'reservations'),
+            ORM\JoinColumn(name: 'trip_id', referencedColumnName: 'id')
+        ]
+        private Trip $trip
     ) {
     }
 
@@ -46,13 +45,6 @@ class Reservation
     public function getTrip(): Trip
     {
         return $this->trip;
-    }
-
-    public function setTrip(Trip $trip): self
-    {
-        $this->trip = $trip;
-
-        return $this;
     }
 
     public function toArray(): array

@@ -38,18 +38,23 @@ class PlaceReservation
             $data['customer']
         );
 
+        $this->rootRepository->persist($trip);
+
         /** @var Reservation $reservation */
         $reservation = $trip->getReservations()
             ->filter(fn (Reservation $r) => $r->getId() === $reservationId)
             ->first();
 
         return (new JsonResponse($response))
-            ->send([
-                'trip_id' => $trip->aggregateRootId()->toString(),
-                'reservation_id' => $reservation->getId(),
-                'slots' => $reservation->getSlots(),
-                'customer' => $reservation->getCustomer()->getName(),
-            ]);
+            ->send(
+                [
+                    'trip_id' => $trip->aggregateRootId()->toString(),
+                    'reservation_id' => $reservation->getId(),
+                    'slots' => $reservation->getSlots(),
+                    'customer' => $reservation->getCustomer()->getName(),
+                ],
+                201
+            );
     }
 
     private function validated(array $data): array

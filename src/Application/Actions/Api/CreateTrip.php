@@ -8,12 +8,18 @@ use App\Application\Actions\JsonResponse;
 use App\Application\Exceptions\ValidationException;
 use App\Domain\Booking\Trip;
 use App\Domain\Booking\TripId;
+use EventSauce\EventSourcing\AggregateRootRepository;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Rakit\Validation\Validator;
 
 class CreateTrip
 {
+    public function __construct(
+        private AggregateRootRepository $rootRepository
+    ) {
+    }
+
     public function __invoke(
         ServerRequestInterface $request,
         ResponseInterface $response
@@ -27,12 +33,17 @@ class CreateTrip
                 $data['destination'] ?? null
             );
 
-        return (new JsonResponse($response))->send([
-            'trip_id' => $trip->aggregateRootId()->toString(),
-            'slots' => $trip->getSlots(),
-            'origin' => $trip->getOrigin(),
-            'destination' => $trip->getDestination(),
-        ]);
+        $this->rootRepository->persist($trip);
+
+        return (new JsonResponse($response))->send(
+            [
+                'trip_id' => $trip->aggregateRootId()->toString(),
+                'slots' => $trip->getSlots(),
+                'origin' => $trip->getOrigin(),
+                'destination' => $trip->getDestination(),
+            ],
+            201
+        );
     }
 
     private function validated(array $parameters): array
