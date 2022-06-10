@@ -10,7 +10,7 @@ networks:
     intern:
 
 services:
-    slim:
+    app:
         image: eddiriarte/php-8.1
         working_dir: /var/www/html
         ports:

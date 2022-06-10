@@ -34,6 +34,10 @@ return function (ContainerBuilder $containerBuilder) {
                         'password' => 'mysecretpassword',
                     ],
                 ],
+                'eventsauce' => [
+                    'consumers' => [
+                    ],
+                ],
             ]);
         }
     ]);

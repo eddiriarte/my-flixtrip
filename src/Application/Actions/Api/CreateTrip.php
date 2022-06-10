@@ -18,6 +18,8 @@ class CreateTrip
     ): ResponseInterface {
         $data = $this->validated($request->getParsedBody());
 
+
+
         return (new JsonResponse($response))->send($data);
     }
 

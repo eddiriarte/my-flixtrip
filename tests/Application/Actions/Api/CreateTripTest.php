@@ -25,7 +25,7 @@ class CreateTripTest extends TestCase
             ]);
         $response = $app->handle($request);
 
-        $payload = json_decode($response->getBody(), true);
+        $payload = json_decode((string)$response->getBody(), true);
         $expectedPayload = [
             'statusCode' => 200,
             'data' => [
