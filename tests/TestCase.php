@@ -10,6 +10,7 @@ use Prophecy\PhpUnit\ProphecyTrait;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
 use Slim\Factory\AppFactory;
+use Slim\Psr7\Factory\RequestFactory;
 use Slim\Psr7\Factory\StreamFactory;
 use Slim\Psr7\Headers;
 use Slim\Psr7\Request as SlimRequest;
@@ -68,7 +69,7 @@ class TestCase extends PHPUnit_TestCase
      * @param array  $serverParams
      * @return Request
      */
-    protected function createRequest(
+    protected function createTestRequest(
         string $method,
         string $path,
         array $headers = ['HTTP_ACCEPT' => 'application/json'],

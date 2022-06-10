@@ -3,29 +3,37 @@
 namespace Tests\Application\Actions\Api;
 
 use App\Application\Actions\ActionPayload;
+use Psr\Container\ContainerInterface;
 use Tests\TestCase;
 
 class CreateTripTest extends TestCase
 {
+    public ContainerInterface $container;
+
     public function testInvokedAction()
     {
         $app = $this->getAppInstance();
 
+        $this->container = $app->getContainer();
 
-
-        $request = $this->createRequest(
-            'POST',
-            '/api/v1/trips',
-        );
+        $request = $this->createTestRequest('POST','/api/v1/trips')
+            ->withParsedBody([
+                'slots' => 10,
+                'origin' => 'Berlin',
+                'destiny' => 'Munich',
+            ]);
         $response = $app->handle($request);
 
-        $payload = (string) $response->getBody();
-
-        $expectedPayload = json_encode(new ActionPayload(200, 'Hello World!'));
+        $payload = json_decode($response->getBody(), true);
+        $expectedPayload = [
+            'statusCode' => 200,
+            'data' => [
+                'origin' => 'Berlin',
+                'destiny' => 'Munich',
+                'slots' => 10,
+            ],
+        ];
 
         $this->assertEquals($expectedPayload, $payload);
-
-
-        $this->assertTrue(true);
     }
 }

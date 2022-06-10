@@ -5,6 +5,7 @@ namespace App\Application\Handlers;
 
 use App\Application\Actions\ActionError;
 use App\Application\Actions\ActionPayload;
+use App\Application\Exceptions\ValidationException;
 use Exception;
 use Psr\Http\Message\ResponseInterface as Response;
 use Slim\Exception\HttpBadRequestException;
@@ -30,6 +31,7 @@ class HttpErrorHandler extends SlimErrorHandler
             ActionError::SERVER_ERROR,
             'An internal error has occurred while processing your request.'
         );
+        $data = null;
 
         if ($exception instanceof HttpException) {
             $statusCode = $exception->getCode();
@@ -50,6 +52,12 @@ class HttpErrorHandler extends SlimErrorHandler
             }
         }
 
+        if ($exception instanceof ValidationException) {
+            $statusCode = $exception->getCode();
+            $error->setDescription($exception->getMessage());
+            $data = $exception->getErrors();
+        }
+
         if (!($exception instanceof HttpException)
             && $exception instanceof Throwable
             && $this->displayErrorDetails
@@ -57,7 +65,7 @@ class HttpErrorHandler extends SlimErrorHandler
             $error->setDescription($exception->getMessage());
         }
 
-        $payload = new ActionPayload($statusCode, null, $error);
+        $payload = new ActionPayload($statusCode, $data, $error);
         $encodedPayload = json_encode($payload, JSON_PRETTY_PRINT);
 
         $response = $this->responseFactory->createResponse($statusCode);
