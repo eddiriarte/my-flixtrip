@@ -1,28 +1,22 @@
 {
-    "name": "slim/slim-skeleton",
-    "description": "A Slim Framework skeleton application for rapid development",
+    "name": "eddiriarte/my-flixtrip",
+    "description": "A small application in PHP...",
     "keywords": [
+        "slimphp",
         "microframework",
         "rest",
         "router",
         "psr7"
     ],
-    "homepage": "http://github.com/slimphp/Slim-Skeleton",
     "license": "MIT",
     "authors": [
         {
-            "name": "Josh Lockhart",
-            "email": "info@joshlockhart.com",
-            "homepage": "http://www.joshlockhart.com/"
-        },
-        {
-            "name": "Pierre Berube",
-            "email": "pierre@lgse.com",
-            "homepage": "http://www.lgse.com/"
+            "name": "Eduardo Iriarte-Mendez",
+            "email": "eddiriarte@gmail.com"
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.1",
         "ext-json": "*",
         "monolog/monolog": "^2.3",
         "php-di/php-di": "^6.3",
