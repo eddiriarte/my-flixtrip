@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
 use DI\ContainerBuilder;
+use Doctrine\ORM\EntityManager;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
@@ -25,6 +26,17 @@ return function (ContainerBuilder $containerBuilder) {
             $logger->pushHandler($handler);
 
             return $logger;
+        },
+        EntityManager::class => function (ContainerInterface $c): EntityManager {
+            /** @var array $doctrine */
+            $doctrine = $c->get(SettingsInterface::class)->get('doctrine');
+
+            $config = \Doctrine\ORM\Tools\Setup::createAttributeMetadataConfiguration(
+                $doctrine['metadata_dirs'],
+                $doctrine['dev_mode'],
+            );
+
+            return EntityManager::create($doctrine['connection'], $config);
         },
     ]);
 };
