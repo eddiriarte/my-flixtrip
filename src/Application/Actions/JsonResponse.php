@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Actions;
 
 use Psr\Http\Message\ResponseInterface;
@@ -27,5 +29,4 @@ class JsonResponse
             ->withHeader('Content-Type', 'application/json')
             ->withStatus($statusCode);
     }
-
 }

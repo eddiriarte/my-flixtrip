@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Application\Actions\Api;
 
-use App\Application\Actions\ActionPayload;
 use Psr\Container\ContainerInterface;
 use Tests\TestCase;
 
@@ -16,7 +17,7 @@ class CreateTripTest extends TestCase
 
         $this->container = $app->getContainer();
 
-        $request = $this->createTestRequest('POST','/api/v1/trips')
+        $request = $this->createTestRequest('POST', '/api/v1/trips')
             ->withParsedBody([
                 'slots' => 10,
                 'origin' => 'Berlin',
