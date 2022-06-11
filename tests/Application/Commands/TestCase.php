@@ -12,6 +12,7 @@ use EventSauce\EventSourcing\InMemoryMessageRepository;
 use EventSauce\EventSourcing\MessageRepository;
 use EventSauce\EventSourcing\TestUtilities\AggregateRootTestCase;
 use Prophecy\PhpUnit\ProphecyTrait;
+use Slim\App;
 use Tests\ApplicationInstanceTrait;
 
 class TestCase extends AggregateRootTestCase
@@ -19,10 +20,11 @@ class TestCase extends AggregateRootTestCase
     use ProphecyTrait;
     use ApplicationInstanceTrait;
 
-    protected \Slim\App $app;
+    protected App $app;
 
     protected function setUp(): void
     {
+        parent::setUp();
         $this->app = $this->getAppInstance();
 
         // Store events in-memory...

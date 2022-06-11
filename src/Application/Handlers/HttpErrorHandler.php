@@ -32,7 +32,6 @@ class HttpErrorHandler extends SlimErrorHandler
             ActionError::SERVER_ERROR,
             'An internal error has occurred while processing your request.'
         );
-        $data = null;
 
         if ($exception instanceof HttpException) {
             $statusCode = $exception->getCode();
@@ -55,8 +54,7 @@ class HttpErrorHandler extends SlimErrorHandler
 
         if ($exception instanceof ValidationException) {
             $statusCode = $exception->getCode();
-            $error->setDescription($exception->getMessage());
-            $data = $exception->getErrors();
+            $error->setDescription('Invalid data: ' . implode(PHP_EOL, $exception->getErrors()));
         }
 
         if (!($exception instanceof HttpException)
@@ -66,7 +64,7 @@ class HttpErrorHandler extends SlimErrorHandler
             $error->setDescription($exception->getMessage());
         }
 
-        $payload = new ActionPayload($statusCode, $data, $error);
+        $payload = new ActionPayload($statusCode, null, $error);
         $encodedPayload = json_encode($payload, JSON_PRETTY_PRINT);
 
         $response = $this->responseFactory->createResponse($statusCode);

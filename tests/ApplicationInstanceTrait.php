@@ -10,11 +10,23 @@ use Slim\Factory\AppFactory;
 
 trait ApplicationInstanceTrait
 {
-    /**
-     * @return App
-     * @throws Exception
-     */
+//    protected ?App $app = null;
+
     protected function getAppInstance(): App
+    {
+        if (!isset($this->app)) {
+            $this->app = $this->initializeApplicationInstance();
+        }
+
+        return $this->app;
+    }
+
+    protected function destroyAppInstance(): void
+    {
+        $this->app = null;
+    }
+
+    private function initializeApplicationInstance(): App
     {
         // Instantiate PHP-DI ContainerBuilder
         $containerBuilder = new ContainerBuilder();

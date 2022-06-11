@@ -21,6 +21,18 @@ class TestCase extends PHPUnit_TestCase
 {
     use ProphecyTrait;
     use ApplicationInstanceTrait;
+    use TestHttpRequests;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+        $this->destroyAppInstance();
+    }
 
     /**
      * @param string $method
