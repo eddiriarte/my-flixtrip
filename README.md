@@ -48,9 +48,12 @@ The application contains following endpoints:
 
 The easiest way to test the endpoints is to run the call defined in the `MyFlixTrip.http` file. (Executable in PHPStorm)
 
-__2) Unit-Tests__
+__2) Unit-Tests and E2E-Tests__
 
 ```
-docker-compose exec app vendor/bin/phpunit
+docker-compose exec app vendor/bin/pest
 ```
+
+Currently tests are not working on Github due to database dependencies. 
+A fix hat has not been implemented, but all tests are passing, when running them as described. 
 
