@@ -1,4 +1,6 @@
 # My FlixTrip -- Changelog
+### [1.0.1](https://gh-eddiriarte/eddiriarte/my-flixtrip/compare/1.0.0...1.0.1) (2022-06-11)
+
 ## 1.0.0 (2022-06-11)
 
 

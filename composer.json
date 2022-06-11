@@ -64,5 +64,5 @@
         "start": "php -S localhost:8080 -t public",
         "test": "phpunit"
     },
-    "version": "1.0.0"
+    "version": "1.0.1"
 }
