@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb58006786352bcafda23a05afd15bdb",
+    "content-hash": "bfa0b284f87be0231cac834a51ed0e66",
     "packages": [
         {
             "name": "brick/math",
@@ -3821,6 +3821,58 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "eventsauce/test-utilities",
+            "version": "2.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EventSaucePHP/TestUtilities.git",
+                "reference": "383745146069bc11c02a7c61256bbedf54c320fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EventSaucePHP/TestUtilities/zipball/383745146069bc11c02a7c61256bbedf54c320fb",
+                "reference": "383745146069bc11c02a7c61256bbedf54c320fb",
+                "shasum": ""
+            },
+            "require": {
+                "eventsauce/eventsauce": "^2.0",
+                "php": "^8.0",
+                "phpunit/phpunit": "^8.5|^9.4"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-version/2.0": "2.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "EventSauce\\EventSourcing\\TestUtilities\\": "./"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frenky.net"
+                }
+            ],
+            "description": "Test utilities for EventSauce.",
+            "support": {
+                "source": "https://github.com/EventSaucePHP/TestUtilities/tree/2.2.1"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-05-28T13:46:42+00:00"
+        },
         {
             "name": "jangregor/phpstan-prophecy",
             "version": "1.0.0",

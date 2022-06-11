@@ -45,9 +45,9 @@ class Trip implements AggregateRoot
         return new static($id);
     }
 
-    public function initialize(int $slots, ?string $origin = null, ?string $destiny = null): static
+    public function initialize(int $slots, ?string $origin = null, ?string $destination = null): static
     {
-        $this->recordThat(new TripWasCreated($slots, $origin, $destiny));
+        $this->recordThat(new TripWasCreated($slots, $origin, $destination));
 
         return $this;
     }

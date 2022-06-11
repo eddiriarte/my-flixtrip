@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Application\Actions\Api;
 
 use App\Application\Exceptions\ValidationException;
+use App\Application\Projections\TripRepository;
+use EventSauce\EventSourcing\MessageRepository;
 use Psr\Container\ContainerInterface;
 use Tests\TestCase;
 
@@ -16,7 +18,15 @@ class CreateTripTest extends TestCase
     {
         $app = $this->getAppInstance();
 
-        $this->container = $app->getContainer();
+        $container = $app->getContainer();
+        $container->set(
+            TripRepository::class,
+            $this->getMockBuilder(TripRepository::class)->getMock()
+        );
+        $container->set(
+            MessageRepository::class,
+            $this->getMockBuilder(MessageRepository::class)->getMock()
+        );
 
         $request = $this->createTestRequest('POST', '/api/v1/trips')
             ->withParsedBody([
@@ -30,7 +40,7 @@ class CreateTripTest extends TestCase
         unset($payload['data']['trip_id']); // TODO: find a way to mock uuid or use UUIDv5
 
         $expectedPayload = [
-            'statusCode' => 200,
+            'statusCode' => 201,
             'data' => [
                 'origin' => 'Berlin',
                 'destination' => 'Munich',

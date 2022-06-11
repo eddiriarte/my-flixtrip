@@ -21,7 +21,7 @@ class Reservation
         private int $slots,
         #[
             ORM\ManyToOne(targetEntity: Trip::class, inversedBy: 'reservations'),
-            ORM\JoinColumn(name: 'trip_id', referencedColumnName: 'id')
+        ORM\JoinColumn(name: 'trip_id', referencedColumnName: 'id')
         ]
         private Trip $trip
     ) {
