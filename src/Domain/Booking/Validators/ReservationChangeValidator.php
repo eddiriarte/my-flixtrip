@@ -7,7 +7,7 @@ namespace App\Domain\Booking\Validators;
 use App\Application\Exceptions\ValidationException;
 use Rakit\Validation\Validator;
 
-class ExistingReservationValidator
+class ReservationChangeValidator
 {
     public function __construct(private Validator $validator)
     {
@@ -21,6 +21,7 @@ class ExistingReservationValidator
                 [
                     'reservation_id' => 'required|reservation_exists',
                     'trip_id' => 'required',
+                    'slots' => 'required|integer|free_slots:' . $parameters['trip_id'] . ',' . $parameters['reservation_id'],
                 ]
             );
 

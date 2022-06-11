@@ -16,7 +16,7 @@ interface TripRepository
 
     public function update(Trip $trip): void;
 
-    public function hasSlotsAvailable(string $tripId, int $slots): bool;
+    public function hasSlotsAvailable(string $tripId, int $slots, ?string $reservationId = null): bool;
 
     public function reservationExists(string $reservationId): bool;
 }

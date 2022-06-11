@@ -11,7 +11,7 @@ class HasFreeSlotRule extends Rule
 {
     protected $message = "Not enough :attribute (:value) available at the moment.";
 
-    protected $fillableParams = ['trip_id'];
+    protected $fillableParams = ['trip_id','reservation_id'];
 
     public function __construct(
         private readonly TripRepository $repository
@@ -22,7 +22,8 @@ class HasFreeSlotRule extends Rule
     {
         $this->requireParameters(['trip_id']);
         $tripId = $this->parameter('trip_id');
+        $reservationId = $this->parameter('reservation_id');
 
-        return $this->repository->hasSlotsAvailable($tripId, (int)$value);
+        return $this->repository->hasSlotsAvailable($tripId, (int)$value, $reservationId);
     }
 }

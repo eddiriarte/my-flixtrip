@@ -41,8 +41,21 @@ class DatabaseTripRepository implements TripRepository
         $this->entityManager->flush();
     }
 
-    public function hasSlotsAvailable(string $tripId, int $slots): bool
+    public function hasSlotsAvailable(string $tripId, int $slots, ?string $reservationId = null): bool
     {
+        $reservedSlots = 0;
+        if (isset($reservationId)) {
+            $query = $this->entityManager
+                ->createQueryBuilder()
+                ->select('r.slots')
+                ->from(Reservation::class, 'r')
+                ->where('r.id = :reservationId')
+                ->setParameter('reservationId', $reservationId)
+                ->getQuery();
+
+            $reservedSlots = $query->getSingleScalarResult();
+        }
+
         $query = $this->entityManager
             ->createQueryBuilder()
             ->select('t.freeSlots')
@@ -53,7 +66,7 @@ class DatabaseTripRepository implements TripRepository
 
         $freeSlots = $query->getSingleScalarResult();
 
-        return $freeSlots >= $slots;
+        return ($freeSlots + $reservedSlots) >= $slots;
     }
 
     public function reservationExists(string $reservationId): bool

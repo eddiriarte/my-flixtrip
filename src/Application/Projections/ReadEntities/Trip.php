@@ -14,7 +14,7 @@ class Trip
     public function __construct(
         #[
             ORM\Id,
-            ORM\Column(type: 'string')
+        ORM\Column(type: 'string')
         ]
         private string $id,
         #[ORM\Column(type: 'string', nullable: true)]
@@ -78,6 +78,22 @@ class Trip
         $this->reservations->removeElement($reservation);
         $reservation->setTrip(null);
         $this->freeSlots += $reservation->getReservedSlots();
+
+        return $this;
+    }
+
+    public function changeReservation(Reservation $reservation): static
+    {
+        $this->reservations = $this->reservations
+            ->map(function (Reservation $r) use ($reservation) {
+                if ($r->getId() !== $reservation->getId()) {
+                    return $r;
+                }
+
+                $this->freeSlots -= ($reservation->getReservedSlots() - $r->getReservedSlots());
+
+                return $reservation;
+            });
 
         return $this;
     }

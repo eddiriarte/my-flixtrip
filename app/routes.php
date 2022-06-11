@@ -18,6 +18,7 @@ return function (App $app) {
         $group->post('/trips', v1\CreateTrip::class);
         $group->post('/trips/{tripId}/reservations', v1\PlaceReservation::class);
         $group->delete('/trips/{tripId}/reservations/{reservationId}', v1\CancelReservation::class);
+        $group->put('/trips/{tripId}/reservations/{reservationId}', v1\ChangeReservation::class);
     });
 
     $app->get('/', function (Request $request, Response $response) {

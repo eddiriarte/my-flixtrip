@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Application\Commands;
 
-use App\Application\Projections\ReadEntities\Reservation;
+use App\Domain\Booking\Reservation;
 use App\Domain\Booking\Trip;
 use App\Domain\Booking\TripId;
-use App\Domain\Booking\Validators\ReservationExistenceValidator;
+use App\Domain\Booking\Validators\ReservationChangeValidator;
 use EventSauce\EventSourcing\AggregateRootRepository;
 
-class CancelReservationCommand
+class ChangeReservationCommand
 {
     public function __construct(
-        private ReservationExistenceValidator $validator,
+        private ReservationChangeValidator $validator,
         private AggregateRootRepository $rootRepository
     ) {
     }
 
-    public function handle(array $data): Trip
+    public function handle(array $data): Reservation
     {
         $validated = $this->validator->validate($data);
 
@@ -26,10 +26,15 @@ class CancelReservationCommand
         $trip = $this->rootRepository
             ->retrieve(TripId::fromString($validated['trip_id']));
 
-        $trip->cancelReservation($validated['reservation_id']);
+        $trip->changeReservation(
+            $validated['reservation_id'],
+            $validated['slots'],
+        );
 
         $this->rootRepository->persist($trip);
 
-        return $trip;
+        return $trip->getReservations()
+            ->filter(fn (Reservation $r) => $r->getId() === $validated['reservation_id'])
+            ->first();
     }
 }
