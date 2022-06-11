@@ -21,7 +21,11 @@ class ReservationChangeValidator
                 [
                     'reservation_id' => 'required|reservation_exists',
                     'trip_id' => 'required',
-                    'slots' => 'required|integer|free_slots:' . $parameters['trip_id'] . ',' . $parameters['reservation_id'],
+                    'slots' => [
+                        'required',
+                        'integer',
+                        'free_slots:' . $parameters['trip_id'] . ',' . $parameters['reservation_id']
+                    ],
                 ]
             );
 

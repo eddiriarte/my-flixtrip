@@ -15,7 +15,7 @@ class TripValidatorTest extends TestCase
     {
         $validator = new TripValidator();
 
-        $validated = $validator->validate($data, );
+        $validated = $validator->validate($data);
 
         $this->assertEquals(
             $expectedValues,
