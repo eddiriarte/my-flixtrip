@@ -6,44 +6,45 @@ namespace Tests\Application\Actions\Api;
 
 use App\Application\Exceptions\ValidationException;
 use App\Domain\Booking\TripRepository;
+use EventSauce\EventSourcing\InMemoryMessageRepository;
 use EventSauce\EventSourcing\MessageRepository;
 use Psr\Container\ContainerInterface;
+use Ramsey\Uuid\Uuid;
 use Tests\TestCase;
 
-class CreateTripTest extends TestCase
+class PlaceReservationTest extends TestCase
 {
     public ContainerInterface $container;
 
     public function testInvokedAction()
     {
         $app = $this->getAppInstance();
+        $tripId = (string) Uuid::uuid4();
 
         $container = $app->getContainer();
-        $container->set(
-            TripRepository::class,
-            $this->getMockBuilder(TripRepository::class)->getMock()
-        );
-        $container->set(
-            MessageRepository::class,
-            $this->getMockBuilder(MessageRepository::class)->getMock()
-        );
+        $tripRepository = $this->getMockBuilder(TripRepository::class)->getMock();
+        $tripRepository
+            ->method('hasSlotsAvailable')
+            ->with($tripId, 10)
+            ->willReturn(true);
+        $container->set(TripRepository::class, $tripRepository);
+        $container->set(MessageRepository::class, new InMemoryMessageRepository());
 
-        $request = $this->createTestRequest('POST', '/api/v1/trips')
+        $request = $this->createTestRequest('POST', '/api/v1/trips/' . $tripId . '/reservations')
             ->withParsedBody([
                 'slots' => 10,
-                'origin' => 'Berlin',
-                'destination' => 'Munich',
+                'customer' => 'Ron'
             ]);
         $response = $app->handle($request);
 
         $payload = json_decode((string)$response->getBody(), true);
-        unset($payload['data']['trip_id']); // TODO: find a way to mock uuid or use UUIDv5
+        unset($payload['data']['reservation_id']); // TODO: find a way to mock uuid or use UUIDv5
 
         $expectedPayload = [
             'statusCode' => 201,
             'data' => [
-                'origin' => 'Berlin',
-                'destination' => 'Munich',
+                'trip_id' => $tripId,
+                'customer' => 'Ron',
                 'slots' => 10,
             ],
         ];

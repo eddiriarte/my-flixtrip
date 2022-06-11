@@ -6,7 +6,7 @@ namespace App\Infrastructure\EventSourcing\Consumers;
 
 use App\Application\Projections\ReadEntities\Reservation;
 use App\Application\Projections\ReadEntities\Trip;
-use App\Application\Projections\TripRepository;
+use App\Domain\Booking\TripRepository;
 use App\Domain\Booking\Events\ReservationWasPlaced;
 use App\Domain\Booking\Events\TripWasCreated;
 use EventSauce\EventSourcing\Message;

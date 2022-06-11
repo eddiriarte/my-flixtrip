@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
+use App\Domain\Booking\Validators\HasFreeSlotRule;
 use DI\ContainerBuilder;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\ORM\EntityManager;
@@ -15,6 +16,7 @@ use Monolog\Logger;
 use Monolog\Processor\UidProcessor;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use Rakit\Validation\Validator;
 use Symfony\Component\Cache\Adapter as CacheAdapter;
 
 return function (ContainerBuilder $containerBuilder) {
@@ -78,5 +80,14 @@ return function (ContainerBuilder $containerBuilder) {
                 $messageDispatcher
             );
         },
+        Validator::class => function (ContainerInterface $c) {
+            $validator = new Validator();
+            $validator->addValidator(
+                'free_slots',
+                new HasFreeSlotRule($c->get(\App\Domain\Booking\TripRepository::class))
+            );
+
+            return $validator;
+        }
     ]);
 };

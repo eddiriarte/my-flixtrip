@@ -17,7 +17,7 @@ class CreateTripCommand
     ) {
     }
 
-    public function handle(array $data): mixed
+    public function handle(array $data): Trip
     {
         $validated = $this->validator->validate($data);
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use App\Application\Projections\TripRepository;
+use App\Domain\Booking\TripRepository;
 use App\Infrastructure\Persistence\Booking\DatabaseTripRepository;
 use DI\ContainerBuilder;
 

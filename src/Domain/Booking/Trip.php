@@ -69,6 +69,10 @@ class Trip implements AggregateRoot
 
     public function applyReservationWasPlaced(ReservationWasPlaced $event): void
     {
+        if (!isset($this->reservations)) {
+            $this->reservations = new ArrayCollection();
+        }
+
         $this->reservations->add(new Reservation(
             $event->getId(),
             $event->getSlots(),

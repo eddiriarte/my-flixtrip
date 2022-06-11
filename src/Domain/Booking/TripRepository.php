@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Projections;
+namespace App\Domain\Booking;
 
 use App\Application\Projections\ReadEntities\Trip;
 
@@ -15,4 +15,6 @@ interface TripRepository
     public function insert(Trip $trip): void;
 
     public function update(Trip $trip): void;
+
+    public function hasSlotsAvailable(string $tripId, int $slots): bool;
 }

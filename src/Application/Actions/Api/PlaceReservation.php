@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Actions\Api;
 
 use App\Application\Actions\JsonResponse;
+use App\Application\Commands\PlaceReservationCommand;
 use App\Domain\Booking\Customer;
 use App\Domain\Booking\Reservation;
 use App\Domain\Booking\Trip;
@@ -17,7 +18,7 @@ use Ramsey\Uuid\Uuid;
 class PlaceReservation
 {
     public function __construct(
-        private AggregateRootRepository $rootRepository
+        private PlaceReservationCommand $command
     ) {
     }
 
@@ -26,39 +27,22 @@ class PlaceReservation
         ResponseInterface $response,
         array $args
     ): ResponseInterface {
-        $data = $this->validated($request->getParsedBody());
+        $tripId = $args['tripId'];
 
-        /** @var Trip $trip */
-        $trip = $this->rootRepository->retrieve(TripId::fromString($args['tripId']));
+        $values = $request->getParsedBody();
+        $values['trip_id'] = $tripId;
 
-        $reservationId = (string)Uuid::uuid4();
-        $trip->placeReservation(
-            $reservationId,
-            $data['slots'],
-            $data['customer']
-        );
-
-        $this->rootRepository->persist($trip);
-
-        /** @var Reservation $reservation */
-        $reservation = $trip->getReservations()
-            ->filter(fn (Reservation $r) => $r->getId() === $reservationId)
-            ->first();
+        $reservation = $this->command->handle($values);
 
         return (new JsonResponse($response))
             ->send(
                 [
-                    'trip_id' => $trip->aggregateRootId()->toString(),
+                    'trip_id' => $tripId,
                     'reservation_id' => $reservation->getId(),
                     'slots' => $reservation->getSlots(),
                     'customer' => $reservation->getCustomer()->getName(),
                 ],
                 201
             );
-    }
-
-    private function validated(array $data): array
-    {
-        return $data;
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Persistence\Booking;
 
 use App\Application\Projections\ReadEntities\Trip;
-use App\Application\Projections\TripRepository;
+use App\Domain\Booking\TripRepository;
 use Doctrine\ORM\EntityManager;
 
 class DatabaseTripRepository implements TripRepository
@@ -38,5 +38,19 @@ class DatabaseTripRepository implements TripRepository
     {
         $this->entityManager->persist($trip);
         $this->entityManager->flush();
+    }
+
+    public function hasSlotsAvailable(string $tripId, int $slots): bool
+    {
+        $freeSlots = $this->entityManager
+            ->createQueryBuilder()
+            ->select('t.free_slots')
+            ->from(Trip::class, 't')
+            ->where('t.id = :tripId')
+            ->setParameter('tripId', $tripId)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        return $slots >= $freeSlots;
     }
 }
