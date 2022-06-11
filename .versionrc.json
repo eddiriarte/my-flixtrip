@@ -1,0 +1,15 @@
+{
+  "header": "# My FlixTrip -- Changelog",
+  "repository": {
+    "host": "git@github.com:eddiriarte/my-flixtrip.git",
+    "url": "git@github.com:eddiriarte/my-flixtrip.git"
+  },
+  "releaseCommitMessageFormat": "docs(version): {{currentTag}}",
+  "tagPrefix": "",
+  "bumpFiles": [
+    {
+      "filename": "composer.json",
+      "type": "json"
+    }
+  ]
+}

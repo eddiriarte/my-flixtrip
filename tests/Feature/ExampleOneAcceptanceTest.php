@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 test('Tip can be created with 10 spots', function () {
     $this->post('/api/v1/trips', ['slots' => 10])
         ->assertStatusCode(201);

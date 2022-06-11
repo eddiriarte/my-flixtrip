@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
 use PHPUnit\Framework\Assert;
@@ -85,7 +87,7 @@ trait TestHttpRequests
 
     private function makeResponseFacade(ResponseInterface $response): ResponseInterface
     {
-        return new class($response) implements ResponseInterface {
+        return new class ($response) implements ResponseInterface {
             public function __construct(private ResponseInterface $response)
             {
             }
@@ -98,7 +100,7 @@ trait TestHttpRequests
                 if (count($keys) > 0) {
                     return array_filter(
                         $data,
-                        fn (string $key) => in_array($key, $keys),
+                        fn (string $key) => in_array($key, $keys, true),
                         ARRAY_FILTER_USE_KEY
                     );
                 }

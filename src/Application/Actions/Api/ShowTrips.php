@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Actions\Api;
 
 use App\Application\Actions\JsonResponse;
@@ -19,7 +21,7 @@ class ShowTrips
     public function __invoke(ServerRequestInterface $request, ResponseInterface $response): ResponseInterface
     {
         $trips = (new ArrayCollection($this->repository->findAll()))
-            ->map(fn(Trip $trip) => $trip->toArray())
+            ->map(fn (Trip $trip) => $trip->toArray())
             ->toArray();
 
         return (new JsonResponse($response))->send($trips);
