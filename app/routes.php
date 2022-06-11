@@ -16,6 +16,7 @@ return function (App $app) {
 
     $app->group('/api/v1', function (Group $group) {
         $group->post('/trips', v1\CreateTrip::class);
+        $group->get('/trips', v1\ShowTrips::class);
         $group->post('/trips/{tripId}/reservations', v1\PlaceReservation::class);
         $group->delete('/trips/{tripId}/reservations/{reservationId}', v1\CancelReservation::class);
         $group->put('/trips/{tripId}/reservations/{reservationId}', v1\ChangeReservation::class);

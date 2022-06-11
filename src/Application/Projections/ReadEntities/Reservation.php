@@ -60,7 +60,6 @@ class Reservation
             'id' => $this->id,
             'customer' => $this->customer,
             'slots' => $this->slots,
-            'trip' => $this->trip,
         ];
     }
 }
