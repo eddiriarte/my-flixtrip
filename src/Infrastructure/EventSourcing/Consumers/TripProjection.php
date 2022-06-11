@@ -25,17 +25,20 @@ class TripProjection implements MessageConsumer
     {
         $event = $message->payload();
 
-        match ($event::class) {
-            TripWasCreated::class => $this->persistNewTrip($event, $message->aggregateRootId()->toString()),
-            ReservationWasPlaced::class => $this->persistNewReservation(
+        match (true) { // @phpstan-ignore-line
+            $event instanceof TripWasCreated => $this->persistNewTrip(
                 $event,
                 $message->aggregateRootId()->toString()
             ),
-            ReservationWasCancelled::class => $this->removeExistingReservation(
+            $event instanceof ReservationWasPlaced => $this->persistNewReservation(
                 $event,
                 $message->aggregateRootId()->toString()
             ),
-            ReservationWasChanged::class => $this->changeExistingReservation(
+            $event instanceof ReservationWasCancelled => $this->removeExistingReservation(
+                $event,
+                $message->aggregateRootId()->toString()
+            ),
+            $event instanceof ReservationWasChanged => $this->changeExistingReservation(
                 $event,
                 $message->aggregateRootId()->toString()
             ),

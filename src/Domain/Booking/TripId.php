@@ -7,7 +7,7 @@ namespace App\Domain\Booking;
 use EventSauce\EventSourcing\AggregateRootId;
 use Ramsey\Uuid\Uuid;
 
-class TripId implements AggregateRootId
+final class TripId implements AggregateRootId
 {
     public function __construct(private readonly string $id)
     {

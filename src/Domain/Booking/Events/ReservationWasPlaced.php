@@ -6,7 +6,7 @@ namespace App\Domain\Booking\Events;
 
 use EventSauce\EventSourcing\Serialization\SerializablePayload;
 
-class ReservationWasPlaced implements SerializablePayload
+final class ReservationWasPlaced implements SerializablePayload
 {
     public function __construct(
         private readonly string $id,

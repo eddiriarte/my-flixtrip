@@ -47,7 +47,7 @@ class Reservation
         return $this->trip;
     }
 
-    public function setTrip(): static
+    public function unsetTrip(): static
     {
         $this->trip = null;
 

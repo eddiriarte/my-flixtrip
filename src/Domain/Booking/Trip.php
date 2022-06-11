@@ -13,7 +13,7 @@ use Doctrine\Common\Collections\Collection;
 use EventSauce\EventSourcing\AggregateRoot;
 use EventSauce\EventSourcing\AggregateRootBehaviour;
 
-class Trip implements AggregateRoot
+final class Trip implements AggregateRoot
 {
     use AggregateRootBehaviour;
 

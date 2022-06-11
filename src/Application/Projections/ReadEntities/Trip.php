@@ -76,7 +76,7 @@ class Trip
     public function removeReservation(Reservation $reservation): static
     {
         $this->reservations->removeElement($reservation);
-        $reservation->setTrip(null);
+        $reservation->unsetTrip();
         $this->freeSlots += $reservation->getReservedSlots();
 
         return $this;

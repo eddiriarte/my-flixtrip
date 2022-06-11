@@ -65,8 +65,9 @@ class DatabaseTripRepository implements TripRepository
             ->getQuery();
 
         $freeSlots = $query->getSingleScalarResult();
+        $actualFreeSlots = (int)($freeSlots + $reservedSlots);
 
-        return ($freeSlots + $reservedSlots) >= $slots;
+        return $actualFreeSlots >= $slots;
     }
 
     public function reservationExists(string $reservationId): bool

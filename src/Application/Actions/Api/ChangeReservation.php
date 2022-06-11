@@ -23,10 +23,13 @@ class ChangeReservation
         ResponseInterface $response,
         array $args
     ): ResponseInterface {
-        $values = [
-            'trip_id' => $args['tripId'],
-            'reservation_id' => $args['reservationId'],
-        ] + $request->getParsedBody();
+        $values = array_merge(
+            $request->getParsedBody(),
+            [
+                'trip_id' => $args['tripId'],
+                'reservation_id' => $args['reservationId'],
+            ]
+        );
 
         $reservation = $this->command->handle($values);
 
