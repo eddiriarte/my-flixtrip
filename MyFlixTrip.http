@@ -1,0 +1,61 @@
+# Create new trip
+
+POST http://localhost:8080/api/v1/trips
+Content-Type: application/json
+
+{
+  "slots": 10,
+  "source": "Berlin",
+  "destination": "Munich"
+}
+
+> {%
+client.global.set('trip_id', response.body.data.trip_id)
+client.global.set('reservation_id', null)
+%}
+
+###
+
+# Show all trips
+
+GET http://localhost:8080/api/v1/trips
+Content-Type: application/json
+
+###
+
+# Add trip reservation
+
+POST http://localhost:8080/api/v1/trips/{{trip_id}}/reservations
+Content-Type: application/json
+
+{
+  "slots": 3,
+  "customer": "Bobo"
+}
+
+> {%
+client.global.set('trip_id', response.body.data.trip_id)
+client.global.set('reservation_id', response.body.data.reservation_id)
+%}
+
+###
+
+# Cancel trip reservation
+
+DELETE http://localhost:8080/api/v1/trips/{{trip_id}}/reservations/{{reservation_id}}
+Content-Type: application/json
+
+###
+
+# Change trip reservation
+
+PUT http://localhost:8080/api/v1/trips/{{trip_id}}/reservations/{{reservation_id}}
+Content-Type: application/json
+
+{
+  "slots": 5,
+  "customer": "Bobo"
+}
+
+###
+

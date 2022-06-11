@@ -1,30 +1,56 @@
 My FlixTrip
 ===========
 
-## Install the Application
+This is a small application(for demo purpose only) which allow customers to book city trips available in the platform.
+All changes are stored using event-sourcing and CQRS in order to provide a resilient data structure and boost performance of reading requests.  
 
-Run this command from the directory in which you want to install your new Slim Framework application. You will require PHP 7.3 or newer.
+__Tech. Stack__
 
-```bash
-composer create-project slim/slim-skeleton [my-app-name]
+PHP 8.1 (SlimPHP Framework) + Mysql
+
+## Start Application
+
+__1) Start containers__
+
 ```
-
-```bash
-cd [my-app-name]
-composer start
-```
-
-Or you can use `docker-compose` to run the app with `docker`, so you can run these commands:
-```bash
-cd [my-app-name]
 docker-compose up -d
 ```
-After that, open `http://localhost:8080` in your browser.
 
-Run this command in the application directory to run the test suite
+__2) Install all dependencies__
 
-```bash
-composer test
+```
+docker-compose exec app composer install
+
+# alternative: Run composer install locally on your host machine. (requires PHP 8.1 + mysql module)
+```
+
+__3) Run migrations to setup inital DB Schema__ 
+
+```
+docker-compose exec app vendor/bin/phoenix migrate
 ```
 
 That's it! Now go build something cool.
+
+## Testing Application
+
+__1) Endpoints__ 
+
+The application contains following endpoints:
+
+| Method | Path | Description                                                                    |
+|--------|------|--------------------------------------------------------------------------------|
+| POST | `/api/v1/trips` | Create a new trip (origin - destination cities) and number of available slots. |
+| GET | `/api/v1/trips` | RProvides a list all available trips.                                          |
+| POST | `/api/v1/trips/{{trip_id}}/reservations` | Place a reservation for trip (requires customer name and number of slots)      |
+| DELETE | `/api/v1/trips/{{trip_id}}/reservations/{{reservation_id}}` | Cancels an existing reservation. All slots are availablke for booking again.   |
+| PUT | `/api/v1/trips/{{trip_id}}/reservations/{{reservation_id}}` | Adapts an existing reservation (only number of slots). |
+
+The easiest way to test the endpoints is to run the call defined in the `MyFlixTrip.http` file. (Executable in PHPStorm)
+
+__2) Unit-Tests__
+
+```
+docker-compose exec app vendor/bin/phpunit
+```
+
