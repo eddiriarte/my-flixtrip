@@ -14,7 +14,7 @@ class Trip
     public function __construct(
         #[
             ORM\Id,
-        ORM\Column(type: 'string')
+            ORM\Column(type: 'string')
         ]
         private string $id,
         #[ORM\Column(type: 'string', nullable: true)]
@@ -25,7 +25,12 @@ class Trip
         private int $slots,
         #[ORM\Column(type: 'integer', name: 'free_slots')]
         private int $freeSlots,
-        #[ORM\OneToMany(mappedBy: 'trip', targetEntity: Reservation::class, cascade: ['persist'])]
+        #[ORM\OneToMany(
+            mappedBy: 'trip',
+            targetEntity: Reservation::class,
+            cascade: ['persist', 'remove'],
+            orphanRemoval: true
+        )]
         private Collection $reservations = new ArrayCollection()
     ) {
     }
@@ -70,7 +75,8 @@ class Trip
 
     public function removeReservation(Reservation $reservation): static
     {
-        $this->reservations->remove($reservation);
+        $this->reservations->removeElement($reservation);
+        $reservation->setTrip(null);
         $this->freeSlots += $reservation->getReservedSlots();
 
         return $this;

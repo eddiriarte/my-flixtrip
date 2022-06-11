@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\Booking;
 
+use App\Domain\Booking\Events\ReservationWasCancelled;
 use App\Domain\Booking\Events\ReservationWasPlaced;
 use App\Domain\Booking\Events\TripWasCreated;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -78,5 +79,22 @@ class Trip implements AggregateRoot
             $event->getSlots(),
             new Customer($event->getCustomer())
         ));
+    }
+
+    public function cancelReservation(string $reservationId): static
+    {
+        $this->recordThat(new ReservationWasCancelled($reservationId));
+
+        return $this;
+    }
+
+    public function applyReservationWasCancelled(ReservationWasCancelled $event): void
+    {
+        if (!isset($this->reservations)) {
+            $this->reservations = new ArrayCollection();
+        }
+
+        $this->reservations = $this->reservations
+            ->filter(fn (Reservation $r) => $r->getId() !== $event->getReservationId());
     }
 }

@@ -6,6 +6,7 @@ namespace App\Infrastructure\EventSourcing\Consumers;
 
 use App\Application\Projections\ReadEntities\Reservation;
 use App\Application\Projections\ReadEntities\Trip;
+use App\Domain\Booking\Events\ReservationWasCancelled;
 use App\Domain\Booking\TripRepository;
 use App\Domain\Booking\Events\ReservationWasPlaced;
 use App\Domain\Booking\Events\TripWasCreated;
@@ -26,6 +27,10 @@ class TripProjection implements MessageConsumer
         match ($event::class) {
             TripWasCreated::class => $this->persistNewTrip($event, $message->aggregateRootId()->toString()),
             ReservationWasPlaced::class => $this->persistNewReservation(
+                $event,
+                $message->aggregateRootId()->toString()
+            ),
+            ReservationWasCancelled::class => $this->removeExistingReservation(
                 $event,
                 $message->aggregateRootId()->toString()
             ),
@@ -54,6 +59,17 @@ class TripProjection implements MessageConsumer
             $event->getSlots(),
             $trip
         ));
+
+        $this->repository->update($trip);
+    }
+
+    private function removeExistingReservation(ReservationWasCancelled $event, string $aggregateRootId)
+    {
+        $trip = $this->repository->get($aggregateRootId);
+        $reservation = $trip->getReservations()
+            ->filter(fn (Reservation $r) => $r->getId() === $event->getReservationId())
+            ->first();
+        $trip->removeReservation($reservation);
 
         $this->repository->update($trip);
     }

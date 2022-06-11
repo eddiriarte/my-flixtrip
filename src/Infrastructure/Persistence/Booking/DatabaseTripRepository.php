@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Booking;
 
+use App\Application\Projections\ReadEntities\Reservation;
 use App\Application\Projections\ReadEntities\Trip;
 use App\Domain\Booking\TripRepository;
 use Doctrine\ORM\EntityManager;
@@ -42,15 +43,32 @@ class DatabaseTripRepository implements TripRepository
 
     public function hasSlotsAvailable(string $tripId, int $slots): bool
     {
-        $freeSlots = $this->entityManager
+        $query = $this->entityManager
             ->createQueryBuilder()
-            ->select('t.free_slots')
+            ->select('t.freeSlots')
             ->from(Trip::class, 't')
             ->where('t.id = :tripId')
             ->setParameter('tripId', $tripId)
-            ->getQuery()
-            ->getSingleScalarResult();
+            ->getQuery();
 
-        return $slots >= $freeSlots;
+        $freeSlots = $query->getSingleScalarResult();
+
+        return $freeSlots >= $slots;
+    }
+
+    public function reservationExists(string $reservationId): bool
+    {
+        $query = $this->entityManager
+            ->createQueryBuilder()
+            ->select('r')
+            ->setMaxResults(1)
+            ->from(Reservation::class, 'r')
+            ->where('r.id = :reservationId')
+            ->setParameter('reservationId', $reservationId)
+            ->getQuery();
+
+        $rows = $query->getResult();
+
+        return !empty($rows);
     }
 }

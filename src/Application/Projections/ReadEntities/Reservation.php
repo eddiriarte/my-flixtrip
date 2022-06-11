@@ -23,7 +23,7 @@ class Reservation
             ORM\ManyToOne(targetEntity: Trip::class, inversedBy: 'reservations'),
         ORM\JoinColumn(name: 'trip_id', referencedColumnName: 'id')
         ]
-        private Trip $trip
+        private ?Trip $trip
     ) {
     }
 
@@ -42,9 +42,16 @@ class Reservation
         return $this->slots;
     }
 
-    public function getTrip(): Trip
+    public function getTrip(): ?Trip
     {
         return $this->trip;
+    }
+
+    public function setTrip(): static
+    {
+        $this->trip = null;
+
+        return $this;
     }
 
     public function toArray(): array

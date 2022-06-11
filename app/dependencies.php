@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Application\Settings\SettingsInterface;
 use App\Domain\Booking\Validators\HasFreeSlotRule;
+use App\Domain\Booking\Validators\ReservationExistsRule;
 use DI\ContainerBuilder;
 use Doctrine\Common\Cache\Psr6\DoctrineProvider;
 use Doctrine\ORM\EntityManager;
@@ -85,6 +86,10 @@ return function (ContainerBuilder $containerBuilder) {
             $validator->addValidator(
                 'free_slots',
                 new HasFreeSlotRule($c->get(\App\Domain\Booking\TripRepository::class))
+            );
+            $validator->addValidator(
+                'reservation_exists',
+                new ReservationExistsRule($c->get(\App\Domain\Booking\TripRepository::class))
             );
 
             return $validator;
