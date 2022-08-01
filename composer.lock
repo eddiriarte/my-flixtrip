@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a0f093a02fa578bc53d8ca15aa1c1899",
+    "content-hash": "6d80f599388e22718e0e4a4db48a93ce",
     "packages": [
         {
             "name": "brick/math",
@@ -1061,20 +1061,21 @@
         },
         {
             "name": "eventsauce/eventsauce",
-            "version": "2.2.1",
+            "version": "2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EventSaucePHP/EventSauce.git",
-                "reference": "772f0c3f969c8428daff3acc2d46ecb085aa5677"
+                "reference": "ea5acc54208f0d28983258dfe8ea8b782e72010d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EventSaucePHP/EventSauce/zipball/772f0c3f969c8428daff3acc2d46ecb085aa5677",
-                "reference": "772f0c3f969c8428daff3acc2d46ecb085aa5677",
+                "url": "https://api.github.com/repos/EventSaucePHP/EventSauce/zipball/ea5acc54208f0d28983258dfe8ea8b782e72010d",
+                "reference": "ea5acc54208f0d28983258dfe8ea8b782e72010d",
                 "shasum": ""
             },
             "require": {
                 "eventsauce/clock": "^1.0",
+                "eventsauce/object-hydrator": "^0.4.2",
                 "php": "^8.0"
             },
             "require-dev": {
@@ -1114,7 +1115,7 @@
             "description": "A pragmatic event sourcing library for PHP with a focus on developer experience.",
             "support": {
                 "issues": "https://github.com/EventSaucePHP/EventSauce/issues",
-                "source": "https://github.com/EventSaucePHP/EventSauce/tree/2.2.1"
+                "source": "https://github.com/EventSaucePHP/EventSauce/tree/2.3.0"
             },
             "funding": [
                 {
@@ -1122,7 +1123,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-28T13:47:13+00:00"
+            "time": "2022-07-18T12:53:26+00:00"
         },
         {
             "name": "eventsauce/message-repository-for-doctrine",
@@ -1224,6 +1225,70 @@
                 }
             ],
             "time": "2022-04-09T07:39:26+00:00"
+        },
+        {
+            "name": "eventsauce/object-hydrator",
+            "version": "0.4.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/EventSaucePHP/ObjectHydrator.git",
+                "reference": "c1b159ae968b8b356aa7dbecb272c1e728412f41"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/EventSaucePHP/ObjectHydrator/zipball/c1b159ae968b8b356aa7dbecb272c1e728412f41",
+                "reference": "c1b159ae968b8b356aa7dbecb272c1e728412f41",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "php": "^8.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.4",
+                "league/construct-finder": "^1.1",
+                "phpbench/phpbench": "^1.2",
+                "phpstan/phpstan": "^1.7",
+                "phpunit/phpunit": "^9.5.11",
+                "ramsey/uuid": "^4.2"
+            },
+            "suggest": {
+                "league/construct-finder": "Find all classes in a directory for the best dumped hydrators."
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "EventSauce\\ObjectHydrator\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "Converts structured data into strict objects.",
+            "keywords": [
+                "construction",
+                "constructor",
+                "hydration",
+                "mapper"
+            ],
+            "support": {
+                "issues": "https://github.com/EventSaucePHP/ObjectHydrator/issues",
+                "source": "https://github.com/EventSaucePHP/ObjectHydrator/tree/0.4.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/frankdejonge",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-07-08T16:57:09+00:00"
         },
         {
             "name": "eventsauce/uuid-encoding",
