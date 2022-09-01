@@ -31,7 +31,7 @@
         "symfony/cache": "^6.1"
     },
     "require-dev": {
-        "eventsauce/test-utilities": "^2.2",
+        "eventsauce/test-utilities": "^3.0",
         "jangregor/phpstan-prophecy": "^1.0.0",
         "pestphp/pest": "^1.21",
         "phpspec/prophecy-phpunit": "^2.0",
