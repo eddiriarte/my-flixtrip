@@ -19,7 +19,7 @@
         "php": "^8.1",
         "ext-json": "*",
         "doctrine/orm": "^2.12",
-        "eventsauce/eventsauce": "^2.2",
+        "eventsauce/eventsauce": "^2.3",
         "eventsauce/message-repository-for-doctrine": "^0.3.1",
         "eventsauce/message-repository-table-schema": "^0.3.1",
         "lulco/phoenix": "^2.2",
