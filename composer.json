@@ -33,7 +33,7 @@
     "require-dev": {
         "eventsauce/test-utilities": "^2.2",
         "jangregor/phpstan-prophecy": "^1.0.0",
-        "pestphp/pest": "^1.21",
+        "pestphp/pest": "^1.22",
         "phpspec/prophecy-phpunit": "^2.0",
         "phpstan/extension-installer": "^1.1.0",
         "phpstan/phpstan": "^1.3",
