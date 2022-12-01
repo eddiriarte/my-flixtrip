@@ -18,7 +18,7 @@
     "require": {
         "php": "^8.1",
         "ext-json": "*",
-        "doctrine/orm": "^2.12",
+        "doctrine/orm": "^2.13",
         "eventsauce/eventsauce": "^2.2",
         "eventsauce/message-repository-for-doctrine": "^0.3.1",
         "eventsauce/message-repository-table-schema": "^0.3.1",
