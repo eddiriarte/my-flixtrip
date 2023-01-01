@@ -28,7 +28,7 @@
         "rakit/validation": "^1.4",
         "slim/psr7": "^1.5",
         "slim/slim": "^4.9",
-        "symfony/cache": "^6.1"
+        "symfony/cache": "^6.2"
     },
     "require-dev": {
         "eventsauce/test-utilities": "^2.2",
